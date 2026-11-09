@@ -1,0 +1,8 @@
+.root {
+  display: grid;
+  gap: var(--space-10);
+}
+
+.empty {
+  color: var(--color-text-muted);
+}

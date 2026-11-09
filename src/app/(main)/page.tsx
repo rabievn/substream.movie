@@ -16,7 +16,8 @@ import {
   getUpcomingTitles,
 } from "@/features/catalog/server";
 import { getCurrentUser } from "@/features/auth/server";
-import { UpcomingSection } from "@/features/upcoming";
+import { NotifyButton, UpcomingSection } from "@/features/upcoming";
+import { getNotificationTitleIds } from "@/features/upcoming/server";
 import { ContinueWatchingRow } from "@/features/watch-progress";
 import { getContinueWatching } from "@/features/watch-progress/server";
 import { Section } from "@/components/ui";
@@ -38,14 +39,27 @@ export default async function HomePage() {
       getCollections(locale),
     ],
   );
-  const continueWatching = user ? await getContinueWatching(user.id, locale) : [];
+  const [continueWatching, notifiedIds] = user
+    ? await Promise.all([getContinueWatching(user.id, locale), getNotificationTitleIds(user.id)])
+    : [[], []];
 
   return (
     <>
       {featured ? <HeroFeatured title={featured} t={t} locale={locale} /> : null}
       <Container className={styles.sections}>
         <ContinueWatchingRow items={continueWatching} t={t} />
-        <UpcomingSection items={upcoming} t={t} locale={locale} />
+        <UpcomingSection
+          items={upcoming}
+          t={t}
+          locale={locale}
+          renderAction={
+            user
+              ? (item) => (
+                  <NotifyButton titleId={item.id} isSubscribed={notifiedIds.includes(item.id)} />
+                )
+              : undefined
+          }
+        />
         <TitleCarousel
           title={t.homePage.topMovies}
           titles={topMovies}

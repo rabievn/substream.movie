@@ -213,13 +213,82 @@ const en = {
     limitReached: "You've reached the saved words limit.",
     error: "Something went wrong. Try again.",
   },
+  lists: {
+    title: "My lists",
+    addToList: "Add to list",
+    inLists: "In your lists",
+    watchLater: "Watch later",
+    favorites: "Favorites",
+    newListLabel: "New list name",
+    createList: "Create list",
+    deleteList: "Delete list",
+    empty: "This list is empty.",
+    nameRequired: "Enter a name (1–60 characters).",
+    signInToUse: "Sign in to use lists",
+    notifyMe: "Notify me",
+    notifying: "We'll notify you",
+  },
+  requests: {
+    title: "Title requests",
+    intro: "Missing a film or series? Ask us to add it.",
+    nameLabel: "Title name",
+    yearLabel: "Year (optional)",
+    commentLabel: "Comment (optional)",
+    submit: "Send request",
+    sending: "Sending…",
+    sent: "Request sent. Thank you!",
+    nameRequired: "Enter the title name.",
+    yearInvalid: "Enter a valid year.",
+    yours: "Your requests",
+    none: "You haven't requested anything yet.",
+    statusPENDING: "Pending",
+    statusACCEPTED: "Accepted",
+    statusREJECTED: "Rejected",
+    statusADDED: "Added",
+  },
+  subscriptionPage: {
+    title: "Subscription",
+    noPayments: "Payments aren't connected yet — this page shows your current access.",
+    expiresOn: "Access until {date}",
+    perks: "Included: full catalog, dual subtitles, word lookup, unlimited dictionary.",
+  },
+  help: {
+    title: "Help & FAQ",
+    contact: "Still need help? Write to support@substream.movie",
+    faq: [
+      {
+        q: "How do dual subtitles work?",
+        a: "The top line is in the original language, the bottom line is the translation. Toggle each with S and T or the EN/RU buttons in the player.",
+      },
+      {
+        q: "How do I save a word?",
+        a: "Click any word in the original subtitles. The video pauses and a card shows the translation — press “Save to dictionary”.",
+      },
+      {
+        q: "What are A1–C2 levels?",
+        a: "CEFR levels describe language difficulty: A1–A2 beginner, B1–B2 intermediate, C1–C2 advanced. Each title has an estimated level.",
+      },
+      {
+        q: "Can I replay a line?",
+        a: "Press A or the rewind button to jump to the start of the previous subtitle line. Turn on “Pause after each line” (P) to read at your pace.",
+      },
+      {
+        q: "Where is my progress saved?",
+        a: "Signed-in users get progress saved automatically. Unfinished titles appear in “Continue watching” on the home page.",
+      },
+    ],
+  },
   home: {
     title: "Learn English by watching what you love",
     subtitle: "Dual subtitles, one-click translations and a personal dictionary.",
   },
 } as const;
 
-type DeepStringify<T> = { [K in keyof T]: T[K] extends string ? string : DeepStringify<T[K]> };
+type DeepStringify<T> = T extends string
+  ? string
+  : T extends readonly (infer Item)[]
+    ? readonly DeepStringify<Item>[]
+    : { [K in keyof T]: DeepStringify<T[K]> };
 export type Dictionary = DeepStringify<typeof en>;
 
 const ru: Dictionary = {
@@ -438,6 +507,71 @@ const ru: Dictionary = {
     from: "из «{title}»",
     limitReached: "Достигнут лимит сохранённых слов.",
     error: "Что-то пошло не так. Попробуйте ещё раз.",
+  },
+  lists: {
+    title: "Мои списки",
+    addToList: "В список",
+    inLists: "В ваших списках",
+    watchLater: "Смотреть позже",
+    favorites: "Избранное",
+    newListLabel: "Название нового списка",
+    createList: "Создать список",
+    deleteList: "Удалить список",
+    empty: "Список пуст.",
+    nameRequired: "Введите название (1–60 символов).",
+    signInToUse: "Войдите, чтобы пользоваться списками",
+    notifyMe: "Сообщить о выходе",
+    notifying: "Мы сообщим вам",
+  },
+  requests: {
+    title: "Заявки на фильмы",
+    intro: "Не нашли фильм или сериал? Попросите нас добавить его.",
+    nameLabel: "Название",
+    yearLabel: "Год (необязательно)",
+    commentLabel: "Комментарий (необязательно)",
+    submit: "Отправить заявку",
+    sending: "Отправляем…",
+    sent: "Заявка отправлена. Спасибо!",
+    nameRequired: "Введите название.",
+    yearInvalid: "Введите корректный год.",
+    yours: "Ваши заявки",
+    none: "Вы ещё ничего не запрашивали.",
+    statusPENDING: "На рассмотрении",
+    statusACCEPTED: "Принята",
+    statusREJECTED: "Отклонена",
+    statusADDED: "Добавлено",
+  },
+  subscriptionPage: {
+    title: "Подписка",
+    noPayments: "Оплата пока не подключена — здесь показан ваш текущий доступ.",
+    expiresOn: "Доступ до {date}",
+    perks: "Включено: весь каталог, двойные субтитры, перевод слов, словарь без ограничений.",
+  },
+  help: {
+    title: "Помощь и FAQ",
+    contact: "Остались вопросы? Напишите на support@substream.movie",
+    faq: [
+      {
+        q: "Как работают двойные субтитры?",
+        a: "Верхняя строка — на языке оригинала, нижняя — перевод. Включайте и выключайте их клавишами S и T или кнопками EN/RU в плеере.",
+      },
+      {
+        q: "Как сохранить слово?",
+        a: "Нажмите на любое слово в оригинальных субтитрах. Видео встанет на паузу, появится карточка с переводом — нажмите «Сохранить в словарь».",
+      },
+      {
+        q: "Что значат уровни A1–C2?",
+        a: "Это уровни CEFR: A1–A2 — начальный, B1–B2 — средний, C1–C2 — продвинутый. У каждого фильма указан примерный уровень.",
+      },
+      {
+        q: "Можно повторить фразу?",
+        a: "Нажмите A или кнопку перемотки, чтобы вернуться к началу предыдущей фразы. Включите «Паузу после каждой фразы» (P), чтобы читать в своём темпе.",
+      },
+      {
+        q: "Где сохраняется прогресс?",
+        a: "Для вошедших пользователей прогресс сохраняется автоматически. Недосмотренное появляется в «Продолжить просмотр» на главной.",
+      },
+    ],
   },
   home: {
     title: "Учите английский, смотря то, что любите",

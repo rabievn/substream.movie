@@ -1,0 +1,17 @@
+.root {
+  display: grid;
+  gap: var(--space-5);
+  max-width: 420px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.status {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}

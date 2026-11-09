@@ -90,3 +90,10 @@
     display: inline-flex;
   }
 }
+
+.avatarLink {
+  display: inline-flex;
+  border-radius: var(--radius-full);
+
+  @include focus-ring;
+}

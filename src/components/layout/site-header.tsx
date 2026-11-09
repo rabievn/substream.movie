@@ -1,7 +1,8 @@
-import { Search, UserRound } from "lucide-react";
+import { Search } from "lucide-react";
 import Link from "next/link";
-import { Button, Container } from "@/components/ui";
+import { Container } from "@/components/ui";
 import { getDictionary } from "@/lib/i18n/get-locale";
+import { HeaderUser } from "./header-user";
 import { LocaleSwitch } from "./locale-switch";
 import { Logo } from "./logo";
 import { MobileNav } from "./mobile-nav";
@@ -28,12 +29,7 @@ export async function SiteHeader() {
             <LocaleSwitch />
           </span>
           <ThemeToggle />
-          <Button asChild size="sm" variant="secondary" className={styles.desktopOnly}>
-            <Link href="/profile">
-              <UserRound aria-hidden="true" />
-              {t.nav.profile}
-            </Link>
-          </Button>
+          <HeaderUser t={t} />
         </div>
       </Container>
     </header>

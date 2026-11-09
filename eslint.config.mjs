@@ -17,8 +17,9 @@ const eslintConfig = defineConfig([
         {
           patterns: [
             {
-              group: ["@/features/*/*"],
-              message: "Import a feature only through its public API: @/features/<name>.",
+              group: ["@/features/*/*", "!@/features/*/server"],
+              message:
+                "Import a feature only through its public API: @/features/<name> (or @/features/<name>/server).",
             },
           ],
         },

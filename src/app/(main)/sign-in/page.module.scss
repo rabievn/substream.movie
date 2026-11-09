@@ -1,0 +1,29 @@
+.root {
+  display: grid;
+  place-items: center;
+  padding-block: var(--space-12);
+}
+
+.card {
+  display: grid;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+
+  @include respond-to(sm) {
+    padding: var(--space-8);
+  }
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+}

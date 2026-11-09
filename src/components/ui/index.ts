@@ -12,3 +12,5 @@ export {
   type DialogContentProps,
 } from "./dialog";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
+export { SelectField, type SelectFieldProps } from "./select-field";
+export { TextField, type TextFieldProps } from "./text-field";

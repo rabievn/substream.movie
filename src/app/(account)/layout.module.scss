@@ -1,0 +1,15 @@
+.root {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+  padding-block: var(--space-8);
+
+  @include respond-to(lg) {
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: var(--space-10);
+  }
+}
+
+.main {
+  min-width: 0;
+}

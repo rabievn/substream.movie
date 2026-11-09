@@ -1,0 +1,11 @@
+.root {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+  padding-block: var(--space-8);
+}
+
+.bio {
+  max-width: 65ch;
+  color: var(--color-text-muted);
+}

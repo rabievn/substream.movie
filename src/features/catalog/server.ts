@@ -12,3 +12,9 @@ export {
   type UpcomingTitle,
 } from "./server/home-queries";
 export { getCollection } from "./server/get-collection";
+export {
+  getPersonWithTitles,
+  getTitleDetails,
+  type SeasonDetails,
+  type TitleDetails,
+} from "./server/get-title-details";

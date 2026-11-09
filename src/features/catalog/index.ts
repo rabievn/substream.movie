@@ -6,6 +6,7 @@ export { NewOnSiteFeed } from "./components/new-on-site-feed";
 export { PeopleCarousel } from "./components/people-carousel";
 export { QuickLinks } from "./components/quick-links";
 export { TitleCarousel } from "./components/title-carousel";
+export { TitleDetailsView } from "./components/title-details-view";
 export { LevelBadge } from "./components/level-badge";
 export { TitleCard } from "./components/title-card";
 export { TitleGrid } from "./components/title-grid";

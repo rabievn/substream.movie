@@ -1,0 +1,40 @@
+.root {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  min-height: var(--space-8);
+}
+
+.hasCarousel {
+  @include respond-to(md) {
+    padding-right: 88px;
+  }
+}
+
+.title {
+  font-size: var(--font-size-xl);
+
+  @include respond-to(md) {
+    font-size: var(--font-size-2xl);
+  }
+}
+
+.action {
+  margin-left: auto;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-accent);
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+
+  @include focus-ring;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

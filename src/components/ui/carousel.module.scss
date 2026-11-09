@@ -1,0 +1,77 @@
+.root {
+  position: relative;
+}
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0 0 var(--space-2);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0;
+  scrollbar-width: none;
+
+  > li {
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+
+  @include respond-to(md) {
+    gap: var(--space-4);
+  }
+}
+
+.poster {
+  grid-auto-columns: 42%;
+
+  @include respond-to(sm) {
+    grid-auto-columns: 30%;
+  }
+
+  @include respond-to(md) {
+    grid-auto-columns: 22%;
+  }
+
+  @include respond-to(lg) {
+    grid-auto-columns: calc((100% - 5 * var(--space-4)) / 6);
+  }
+}
+
+.wide {
+  grid-auto-columns: 85%;
+
+  @include respond-to(md) {
+    grid-auto-columns: 46%;
+  }
+
+  @include respond-to(lg) {
+    grid-auto-columns: calc((100% - 2 * var(--space-4)) / 3);
+  }
+}
+
+.avatar {
+  grid-auto-columns: 28%;
+
+  @include respond-to(sm) {
+    grid-auto-columns: 20%;
+  }
+
+  @include respond-to(lg) {
+    grid-auto-columns: calc((100% - 7 * var(--space-4)) / 8);
+  }
+}
+
+.controls {
+  position: absolute;
+  top: calc(-1 * var(--space-12));
+  right: 0;
+  display: none;
+  gap: var(--space-1);
+
+  @include respond-to(md) {
+    display: flex;
+  }
+}

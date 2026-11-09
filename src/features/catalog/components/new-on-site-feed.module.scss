@@ -1,0 +1,28 @@
+.root {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.language {
+  min-width: 0;
+  flex: 1 1 160px;
+  max-width: 240px;
+
+  label {
+    @include visually-hidden;
+  }
+}
+
+.empty {
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--color-text-muted);
+}

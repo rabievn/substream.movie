@@ -1,5 +1,11 @@
 // Client-safe public API of the catalog feature. Server API: "@/features/catalog/server".
 export { CatalogView } from "./components/catalog-view";
+export { CollectionGrid } from "./components/collection-grid";
+export { HeroFeatured } from "./components/hero-featured";
+export { NewOnSiteFeed } from "./components/new-on-site-feed";
+export { PeopleCarousel } from "./components/people-carousel";
+export { QuickLinks } from "./components/quick-links";
+export { TitleCarousel } from "./components/title-carousel";
 export { LevelBadge } from "./components/level-badge";
 export { TitleCard } from "./components/title-card";
 export { TitleGrid } from "./components/title-grid";

@@ -14,3 +14,5 @@ export {
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 export { SelectField, type SelectFieldProps } from "./select-field";
 export { TextField, type TextFieldProps } from "./text-field";
+export { Carousel, type CarouselProps } from "./carousel";
+export { Section, type SectionProps } from "./section";

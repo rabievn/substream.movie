@@ -13,7 +13,15 @@ export const catalogApi = baseApi.injectEndpoints({
         `/titles?${toSearchParams({ ...queryArg, page: pageParam })}`,
       providesTags: [{ type: "Title", id: "LIST" }],
     }),
+    getTitlesPage: build.query<TitlePage, TitleFilterQuery & { pageSize?: number }>({
+      query: ({ pageSize, ...filter }) => {
+        const params = toSearchParams({ ...filter, page: 1 });
+        if (pageSize) params.set("pageSize", String(pageSize));
+        return `/titles?${params}`;
+      },
+      providesTags: [{ type: "Title", id: "LIST" }],
+    }),
   }),
 });
 
-export const { useGetTitlesInfiniteQuery } = catalogApi;
+export const { useGetTitlesInfiniteQuery, useGetTitlesPageQuery } = catalogApi;

@@ -1,0 +1,35 @@
+.root {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+}
+
+.image {
+  object-fit: cover;
+}
+
+// Generated artwork: hue/angle come from inline custom properties.
+.placeholder {
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-3);
+  background:
+    radial-gradient(circle at 80% 15%, hsl(var(--poster-hue) 80% 70% / 55%) 0%, transparent 45%),
+    linear-gradient(
+      var(--poster-angle),
+      hsl(var(--poster-hue) 55% 22%) 0%,
+      hsl(calc(var(--poster-hue) + 40) 60% 38%) 100%
+    );
+}
+
+.placeholderTitle {
+  color: var(--color-on-media);
+  font-size: var(--font-size-md);
+  font-weight: 800;
+  line-height: var(--line-height-tight);
+  text-shadow: 0 1px 8px var(--color-media-shadow);
+
+  @include truncate(3);
+}

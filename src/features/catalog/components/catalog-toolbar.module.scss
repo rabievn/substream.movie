@@ -1,0 +1,60 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  transition: opacity var(--duration-normal) var(--ease-standard);
+
+  &[aria-busy="true"] {
+    opacity: 0.6;
+  }
+}
+
+.count {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.controls {
+  display: flex;
+  flex: 1 1 100%;
+  align-items: flex-end;
+  gap: var(--space-3);
+
+  @include respond-to(md) {
+    flex: 0 1 auto;
+  }
+}
+
+.filtersButton {
+  min-height: 48px;
+
+  @include respond-to(lg) {
+    display: none;
+  }
+}
+
+.counter {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-size: var(--font-size-xs);
+}
+
+.sort {
+  flex: 1;
+  min-width: 0;
+
+  @include respond-to(md) {
+    min-width: 200px;
+  }
+
+  label {
+    @include visually-hidden;
+  }
+}

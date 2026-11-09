@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@/components/ui";
+import { Button, VisuallyHidden } from "@/components/ui";
 import { UserAvatar } from "@/features/auth";
 import { getCurrentUser } from "@/features/auth/server";
 import type { Dictionary } from "@/lib/i18n";
@@ -17,8 +17,9 @@ export async function HeaderUser({ t }: { t: Dictionary }) {
   }
 
   return (
-    <Link href="/profile" className={styles.avatarLink} aria-label={t.nav.profile}>
+    <Link href="/profile" className={styles.avatarLink} title={t.nav.profile}>
       <UserAvatar name={user.name} email={user.email} image={user.image} />
+      <VisuallyHidden>{t.nav.profile}</VisuallyHidden>
     </Link>
   );
 }

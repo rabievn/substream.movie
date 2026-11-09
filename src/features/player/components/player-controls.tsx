@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import { Maximize, Minimize, Pause, PauseCircle, Play, Rewind } from "lucide-react";
 import type { CSSProperties } from "react";
+import { VisuallyHidden } from "@/components/ui";
 import { useI18n } from "@/lib/i18n/i18n-provider";
 import { formatTime } from "../format-time";
 import { PLAYBACK_RATES, type PlaybackRate } from "../model/player-slice";
@@ -85,10 +86,13 @@ export function PlayerControls(props: PlayerControlsProps) {
                 className={clsx(styles.chip, toggle.isOn && styles.isOn)}
                 aria-pressed={toggle.isOn}
                 title={kind === "original" ? t.player.originalSubs : t.player.translationSubs}
-                aria-label={kind === "original" ? t.player.originalSubs : t.player.translationSubs}
                 onClick={kind === "original" ? props.onToggleOriginal : props.onToggleTranslation}
               >
                 {toggle.label}
+                <VisuallyHidden>
+                  {" — "}
+                  {kind === "original" ? t.player.originalSubs : t.player.translationSubs}
+                </VisuallyHidden>
               </button>
             );
           })}

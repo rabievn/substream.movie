@@ -278,6 +278,16 @@ const en = {
       },
     ],
   },
+  search: {
+    title: "Search",
+    label: "Search titles and actors",
+    placeholder: "Film, series or actor",
+    submit: "Search",
+    titles: "Titles",
+    people: "Actors",
+    noResults: "Nothing found for “{query}”.",
+    hint: "Type at least 2 characters.",
+  },
   home: {
     title: "Learn English by watching what you love",
     subtitle: "Dual subtitles, one-click translations and a personal dictionary.",
@@ -572,6 +582,16 @@ const ru: Dictionary = {
         a: "Для вошедших пользователей прогресс сохраняется автоматически. Недосмотренное появляется в «Продолжить просмотр» на главной.",
       },
     ],
+  },
+  search: {
+    title: "Поиск",
+    label: "Поиск фильмов и актёров",
+    placeholder: "Фильм, сериал или актёр",
+    submit: "Найти",
+    titles: "Фильмы и сериалы",
+    people: "Актёры",
+    noResults: "По запросу «{query}» ничего не найдено.",
+    hint: "Введите хотя бы 2 символа.",
   },
   home: {
     title: "Учите английский, смотря то, что любите",

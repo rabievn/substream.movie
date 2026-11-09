@@ -18,3 +18,4 @@ export {
   type SeasonDetails,
   type TitleDetails,
 } from "./server/get-title-details";
+export { MIN_SEARCH_LENGTH, searchCatalog } from "./server/search";

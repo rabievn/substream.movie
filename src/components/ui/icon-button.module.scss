@@ -1,0 +1,28 @@
+.root {
+  display: inline-grid;
+  place-items: center;
+  border-radius: var(--radius-full);
+  color: var(--color-text);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+
+  @include focus-ring;
+
+  &:hover {
+    background: var(--color-surface-muted);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.sm {
+  width: 32px;
+  height: 32px;
+}
+
+.md {
+  width: 40px;
+  height: 40px;
+}

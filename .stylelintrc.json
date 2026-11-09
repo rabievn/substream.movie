@@ -33,7 +33,8 @@
       {
         "message": "Use @use / @forward instead of @import"
       }
-    ]
+    ],
+    "scss/dollar-variable-empty-line-before": null
   },
   "overrides": [
     {

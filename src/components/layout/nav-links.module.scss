@@ -1,0 +1,39 @@
+.list {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.horizontal {
+  align-items: center;
+}
+
+.vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.link {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition: color var(--duration-fast) var(--ease-standard);
+
+  @include focus-ring;
+
+  &:hover {
+    color: var(--color-text);
+  }
+
+  .vertical & {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-lg);
+  }
+}
+
+.isActive {
+  color: var(--color-text);
+  background: var(--color-surface-muted);
+}

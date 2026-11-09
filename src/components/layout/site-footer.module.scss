@@ -1,0 +1,52 @@
+.root {
+  margin-top: var(--space-16);
+  padding-block: var(--space-10);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.inner {
+  display: grid;
+  gap: var(--space-8);
+
+  @include respond-to(md) {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+}
+
+.brand {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.tagline {
+  max-width: 36ch;
+  color: var(--color-text-muted);
+}
+
+.links {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+
+  a {
+    color: var(--color-text-muted);
+    border-radius: var(--radius-sm);
+
+    @include focus-ring;
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+}
+
+.copyright {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+
+  @include respond-to(md) {
+    grid-column: 1 / -1;
+  }
+}

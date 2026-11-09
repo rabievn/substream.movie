@@ -1,0 +1,37 @@
+@mixin dark-tokens {
+  --color-bg: #0e0e12;
+  --color-surface: #17171d;
+  --color-surface-raised: #202028;
+  --color-surface-muted: #26262f;
+  --color-border: #32323d;
+  --color-text: #f2f1ee;
+  --color-text-muted: #a3a2ad;
+  --color-text-inverse: #0e0e12;
+  --color-accent: #fb923c;
+  --color-accent-hover: #fdba74;
+  --color-accent-contrast: #1a0d04;
+  --color-secondary: #2dd4bf;
+  --color-secondary-contrast: #04211e;
+  --color-success: #4ade80;
+  --color-danger: #f87171;
+  --color-focus: #93c5fd;
+  --color-level-a: #4ade80;
+  --color-level-b: #fbbf24;
+  --color-level-c: #f87171;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+  --shadow-md: 0 4px 16px rgb(0 0 0 / 45%);
+  --shadow-lg: 0 16px 40px rgb(0 0 0 / 55%);
+
+  color-scheme: dark;
+}
+
+// Explicit choice wins; otherwise follow the OS.
+:root[data-theme="dark"] {
+  @include dark-tokens;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include dark-tokens;
+  }
+}

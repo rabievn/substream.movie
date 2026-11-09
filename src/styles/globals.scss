@@ -1,14 +1,4 @@
-:root {
-  color-scheme: light dark;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-}
+@use "themes/tokens";
+@use "themes/dark";
+@use "base/reset";
+@use "base/typography";

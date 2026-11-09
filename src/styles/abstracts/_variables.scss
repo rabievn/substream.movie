@@ -1,7 +1,23 @@
-// SCSS-only values. Colors live in CSS custom properties (themes/_tokens.scss).
+// SCSS-only values. Colors, spacing, radii and shadows live in CSS custom
+// properties (themes/_tokens.scss) so they can change per theme at runtime.
 $breakpoints: (
   sm: 480px,
   md: 768px,
   lg: 1024px,
   xl: 1280px,
+  xxl: 1536px,
 );
+
+$z-index: (
+  base: 0,
+  raised: 10,
+  sticky: 100,
+  header: 200,
+  overlay: 300,
+  modal: 400,
+  popover: 500,
+  toast: 600,
+);
+
+$container-max-width: 1440px;
+$header-height: 64px;

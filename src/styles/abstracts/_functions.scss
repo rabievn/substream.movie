@@ -1,5 +1,17 @@
+@use "sass:map";
 @use "sass:math";
+@use "variables" as *;
 
+/// Converts px to rem: rem(24) → 1.5rem
 @function rem($px, $base: 16) {
   @return math.div($px, $base) * 1rem;
+}
+
+/// z-index from the shared scale: z(modal)
+@function z($layer) {
+  @if not map.has-key($z-index, $layer) {
+    @error "Unknown z-index layer `#{$layer}`.";
+  }
+
+  @return map.get($z-index, $layer);
 }

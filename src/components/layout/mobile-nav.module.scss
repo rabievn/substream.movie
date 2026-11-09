@@ -1,0 +1,11 @@
+.trigger {
+  @include respond-to(lg) {
+    display: none;
+  }
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}

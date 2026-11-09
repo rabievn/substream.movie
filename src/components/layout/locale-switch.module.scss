@@ -1,0 +1,22 @@
+.root {
+  display: inline-flex;
+  padding: 2px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+.option {
+  min-width: 36px;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-text-muted);
+
+  @include focus-ring;
+
+  &[aria-pressed="true"] {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+}

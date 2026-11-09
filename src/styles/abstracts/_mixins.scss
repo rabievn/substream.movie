@@ -1,9 +1,54 @@
 @use "sass:map";
 @use "variables" as *;
 
-// Mobile-first media query: @include respond-to(md) { ... }
+/// Mobile-first media query: @include respond-to(md) { ... }
 @mixin respond-to($bp) {
-  @media (min-width: map.get($breakpoints, $bp)) {
+  @if not map.has-key($breakpoints, $bp) {
+    @error "Unknown breakpoint `#{$bp}`.";
+  }
+
+  @media (width >= map.get($breakpoints, $bp)) {
+    @content;
+  }
+}
+
+/// Visible keyboard focus ring.
+@mixin focus-ring($offset: 2px) {
+  &:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: $offset;
+  }
+}
+
+/// Single-line ellipsis, or multi-line clamp when $lines > 1.
+@mixin truncate($lines: 1) {
+  overflow: hidden;
+
+  @if $lines == 1 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $lines;
+  }
+}
+
+/// Hidden visually but available to screen readers.
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
     @content;
   }
 }

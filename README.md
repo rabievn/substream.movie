@@ -5,15 +5,21 @@ Learn English by watching films and series with dual subtitles.
 ## Stack
 
 Next.js (App Router) · React · TypeScript (strict) · SCSS Modules · Redux Toolkit + RTK Query ·
-Zod · Vitest + Testing Library · ESLint · Stylelint · Prettier · Husky + lint-staged + commitlint.
+Zod · PostgreSQL + Prisma 7 (pg driver adapter) · Vitest + Testing Library · ESLint · Stylelint · Prettier · Husky + lint-staged + commitlint.
 
 ## Getting started
 
 ```bash
-npm install
-cp .env.example .env.local
+npm install                 # also runs `prisma generate`
+cp .env.example .env
+docker compose up -d        # local PostgreSQL 16
+npm run db:migrate -- --name init   # first run creates the initial migration
+npm run db:seed             # placeholder catalog + demo user
 npm run dev
 ```
+
+The seed is idempotent. Demo user: `demo@substream.movie`. Put your own video at
+`public/media/sample.mp4` (see `public/media/README.md`).
 
 ## Scripts
 

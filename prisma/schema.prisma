@@ -1,0 +1,440 @@
+// substream.movie — data model
+// Naming: models PascalCase singular, fields camelCase, tables snake_case plural.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ──────────────────────────────────────────────────────────────────
+
+enum TitleType {
+  MOVIE
+  SERIES
+  CARTOON
+}
+
+enum CefrLevel {
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
+}
+
+/// Audio / original language of a title (ISO 639-1).
+enum Language {
+  EN
+  ES
+  FR
+  DE
+  IT
+}
+
+enum CreditRole {
+  ACTOR
+  DIRECTOR
+}
+
+enum SubtitleKind {
+  /// Subtitles in the language being learned
+  ORIGINAL
+  /// Translation into the learner's language
+  TRANSLATION
+}
+
+enum WordStatus {
+  NEW
+  LEARNING
+  KNOWN
+}
+
+enum TitleRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  ADDED
+}
+
+enum SubscriptionStatus {
+  TRIAL
+  ACTIVE
+  EXPIRED
+  CANCELED
+}
+
+// ─── Auth.js (adapter models) ───────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  /// UI language preference ("ru" | "en")
+  locale        String    @default("ru")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  accounts      Account[]
+  sessions      Session[]
+  subscription  Subscription?
+  savedWords    SavedWord[]
+  watchProgress WatchProgress[]
+  lists         List[]
+  titleRequests TitleRequest[]
+  notifications ReleaseNotification[]
+
+  @@map("users")
+}
+
+model Account {
+  userId            String   @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String   @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Subscription {
+  id        String             @id @default(cuid())
+  userId    String             @unique @map("user_id")
+  plan      String             @default("free")
+  status    SubscriptionStatus @default(TRIAL)
+  expiresAt DateTime           @map("expires_at")
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+// ─── Catalog ────────────────────────────────────────────────────────────────
+
+model Title {
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  type            TitleType
+  /// Title in the original language
+  originalTitle   String    @map("original_title")
+  /// Localized (Russian) title
+  localizedTitle  String?   @map("localized_title")
+  description     String
+  descriptionRu   String?   @map("description_ru")
+  /// One-line hook shown on cards / "coming soon"
+  tagline         String?
+  year            Int
+  /// Movies: runtime. Series: typical episode runtime.
+  durationMinutes Int?      @map("duration_minutes")
+  cefrLevel       CefrLevel @map("cefr_level")
+  language        Language  @default(EN)
+  /// ISO 3166-1 alpha-2 codes
+  countries       String[]
+  ageRating       String?   @map("age_rating")
+  posterUrl       String?   @map("poster_url")
+  backdropUrl     String?   @map("backdrop_url")
+  imdbRating      Decimal?  @map("imdb_rating") @db.Decimal(3, 1)
+  /// Secondary rating source (e.g. a regional site)
+  otherRating     Decimal?  @map("other_rating") @db.Decimal(3, 1)
+  /// Higher = more popular. Updated by views/saves.
+  popularity      Int       @default(0)
+  isFeatured      Boolean   @default(false) @map("is_featured")
+  /// Future date ⇒ shown in "Coming soon"
+  releaseDate     DateTime? @map("release_date")
+  /// Movies only: the playable video. Series use Episode.videoUrl.
+  videoUrl        String?   @map("video_url")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  genres          TitleGenre[]
+  credits         Credit[]
+  seasons         Season[]
+  subtitleTracks  SubtitleTrack[]
+  collectionItems CollectionItem[]
+  listItems       ListItem[]
+  watchProgress   WatchProgress[]
+  savedWords      SavedWord[]
+  notifications   ReleaseNotification[]
+
+  @@index([type, popularity(sort: Desc)])
+  @@index([type, createdAt(sort: Desc)])
+  @@index([cefrLevel])
+  @@index([language])
+  @@index([year])
+  @@index([releaseDate])
+  @@map("titles")
+}
+
+model Genre {
+  id     String       @id @default(cuid())
+  slug   String       @unique
+  name   String
+  nameRu String       @map("name_ru")
+  titles TitleGenre[]
+
+  @@map("genres")
+}
+
+model TitleGenre {
+  titleId String @map("title_id")
+  genreId String @map("genre_id")
+
+  title Title @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  genre Genre @relation(fields: [genreId], references: [id], onDelete: Cascade)
+
+  @@id([titleId, genreId])
+  @@index([genreId])
+  @@map("title_genres")
+}
+
+model Person {
+  id         String   @id @default(cuid())
+  slug       String   @unique
+  name       String
+  photoUrl   String?  @map("photo_url")
+  bio        String?
+  /// Used for "top actors"
+  popularity Int      @default(0)
+  credits    Credit[]
+
+  @@map("people")
+}
+
+model Credit {
+  id        String     @id @default(cuid())
+  titleId   String     @map("title_id")
+  personId  String     @map("person_id")
+  role      CreditRole
+  character String?
+  order     Int        @default(0)
+
+  title  Title  @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  person Person @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  @@unique([titleId, personId, role])
+  @@index([personId])
+  @@map("credits")
+}
+
+model Season {
+  id       String    @id @default(cuid())
+  titleId  String    @map("title_id")
+  number   Int
+  name     String?
+  episodes Episode[]
+
+  title Title @relation(fields: [titleId], references: [id], onDelete: Cascade)
+
+  @@unique([titleId, number])
+  @@map("seasons")
+}
+
+model Episode {
+  id              String   @id @default(cuid())
+  seasonId        String   @map("season_id")
+  number          Int
+  name            String
+  description     String?
+  durationSeconds Int      @map("duration_seconds")
+  videoUrl        String?  @map("video_url")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  season         Season          @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  subtitleTracks SubtitleTrack[]
+  watchProgress  WatchProgress[]
+
+  @@unique([seasonId, number])
+  @@map("episodes")
+}
+
+/// A .vtt/.srt file for a movie (titleId) or an episode (episodeId).
+model SubtitleTrack {
+  id        String       @id @default(cuid())
+  titleId   String?      @map("title_id")
+  episodeId String?      @map("episode_id")
+  /// BCP 47 tag, e.g. "en", "ru"
+  language  String
+  kind      SubtitleKind
+  label     String
+  url       String
+
+  title   Title?   @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  episode Episode? @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+
+  @@index([titleId])
+  @@index([episodeId])
+  @@map("subtitle_tracks")
+}
+
+model Collection {
+  id            String           @id @default(cuid())
+  slug          String           @unique
+  name          String
+  nameRu        String           @map("name_ru")
+  description   String?
+  descriptionRu String?          @map("description_ru")
+  coverUrl      String?          @map("cover_url")
+  order         Int              @default(0)
+  items         CollectionItem[]
+
+  @@map("collections")
+}
+
+model CollectionItem {
+  collectionId String @map("collection_id")
+  titleId      String @map("title_id")
+  order        Int    @default(0)
+
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  title      Title      @relation(fields: [titleId], references: [id], onDelete: Cascade)
+
+  @@id([collectionId, titleId])
+  @@map("collection_items")
+}
+
+// ─── Learning & personal data ───────────────────────────────────────────────
+
+model SavedWord {
+  id           String     @id @default(cuid())
+  userId       String     @map("user_id")
+  /// Lemma / normalized lowercase form
+  word         String
+  translation  String
+  /// Subtitle line the word was saved from
+  context      String?
+  titleId      String?    @map("title_id")
+  /// Position in the video (seconds) where the word appeared
+  timestamp    Int?
+  status       WordStatus @default(NEW)
+  reviewCount  Int        @default(0) @map("review_count")
+  nextReviewAt DateTime   @default(now()) @map("next_review_at")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title Title? @relation(fields: [titleId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, word])
+  @@index([userId, nextReviewAt])
+  @@map("saved_words")
+}
+
+/// One row per user × title: the last watched position (episode for series).
+model WatchProgress {
+  id              String   @id @default(cuid())
+  userId          String   @map("user_id")
+  titleId         String   @map("title_id")
+  episodeId       String?  @map("episode_id")
+  positionSeconds Int      @map("position_seconds")
+  durationSeconds Int      @map("duration_seconds")
+  isFinished      Boolean  @default(false) @map("is_finished")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title   Title    @relation(fields: [titleId], references: [id], onDelete: Cascade)
+  episode Episode? @relation(fields: [episodeId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, titleId])
+  @@index([userId, updatedAt(sort: Desc)])
+  @@map("watch_progress")
+}
+
+model List {
+  id        String     @id @default(cuid())
+  userId    String     @map("user_id")
+  name      String
+  /// System lists ("watch-later", "favorites") can't be renamed or deleted
+  systemKey String?    @map("system_key")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  items     ListItem[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, systemKey])
+  @@index([userId])
+  @@map("lists")
+}
+
+model ListItem {
+  listId  String   @map("list_id")
+  titleId String   @map("title_id")
+  addedAt DateTime @default(now()) @map("added_at")
+
+  list  List  @relation(fields: [listId], references: [id], onDelete: Cascade)
+  title Title @relation(fields: [titleId], references: [id], onDelete: Cascade)
+
+  @@id([listId, titleId])
+  @@map("list_items")
+}
+
+model TitleRequest {
+  id        String             @id @default(cuid())
+  userId    String             @map("user_id")
+  name      String
+  year      Int?
+  comment   String?
+  status    TitleRequestStatus @default(PENDING)
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("title_requests")
+}
+
+/// "Notify me" subscriptions for upcoming titles.
+model ReleaseNotification {
+  userId     String    @map("user_id")
+  titleId    String    @map("title_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  notifiedAt DateTime? @map("notified_at")
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title Title @relation(fields: [titleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, titleId])
+  @@map("release_notifications")
+}

@@ -83,7 +83,12 @@ export function VideoPlayer(props: VideoPlayerProps) {
   );
 
   useEffect(() => {
-    dispatch(playerReset());
+    // Metadata may already be loaded before hydration (cached video).
+    const video = videoRef.current;
+    if (video && video.readyState >= 1) dispatch(durationUpdated(video.duration));
+    return () => {
+      dispatch(playerReset());
+    };
   }, [dispatch, src]);
 
   useEffect(() => {

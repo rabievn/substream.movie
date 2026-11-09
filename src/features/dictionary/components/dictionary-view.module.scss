@@ -1,0 +1,76 @@
+.root {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.tabs {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.search {
+  max-width: 420px;
+}
+
+.empty {
+  padding: var(--space-10) var(--space-4);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.word {
+  font-weight: 700;
+
+  span {
+    color: var(--color-accent);
+  }
+}
+
+.context {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+
+  @include truncate;
+}
+
+.source {
+  justify-self: start;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  border-radius: var(--radius-sm);
+
+  @include focus-ring;
+}

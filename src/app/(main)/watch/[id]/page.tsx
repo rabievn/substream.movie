@@ -3,11 +3,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button, Container } from "@/components/ui";
-import { VideoPlayer } from "@/features/player";
+import { getCurrentUser } from "@/features/auth/server";
 import { getPlayback } from "@/features/player/server";
 import { format } from "@/lib/i18n";
 import { getDictionary, getLocale } from "@/lib/i18n/get-locale";
 import styles from "./page.module.scss";
+import { WatchPlayer } from "./watch-player";
 
 interface WatchPageProps {
   /** Title slug */
@@ -31,8 +32,12 @@ export default async function WatchPage({ params, searchParams }: WatchPageProps
     getDictionary(),
     getLocale(),
   ]);
-  const playback = await getPlayback(id, episodeId, locale);
+  const [playback, user] = await Promise.all([
+    getPlayback(id, episodeId, locale),
+    getCurrentUser(),
+  ]);
   if (!playback) notFound();
+  const currentPath = `/watch/${playback.titleSlug}${playback.episode ? `?e=${playback.episode.id}` : ""}`;
 
   const episodeHref = (targetId: string) => `/watch/${playback.titleSlug}?e=${targetId}`;
 
@@ -53,11 +58,14 @@ export default async function WatchPage({ params, searchParams }: WatchPageProps
         </h1>
       </header>
 
-      <VideoPlayer
+      <WatchPlayer
         key={playback.videoUrl + (playback.episode?.id ?? "")}
+        titleId={playback.titleId}
         src={playback.videoUrl}
         originalTrack={playback.originalTrack}
         translationTrack={playback.translationTrack}
+        isSignedIn={Boolean(user)}
+        signInHref={`/sign-in?callbackUrl=${encodeURIComponent(currentPath)}`}
       />
 
       <div className={styles.footer}>

@@ -54,6 +54,7 @@ interface VideoPlayerProps {
   overlay?: ReactNode;
   onTimeUpdate?: (time: number, duration: number) => void;
   onEnded?: () => void;
+  onPause?: () => void;
 }
 
 export function VideoPlayer(props: VideoPlayerProps) {
@@ -161,7 +162,10 @@ export function VideoPlayer(props: VideoPlayerProps) {
           props.onTimeUpdate?.(video.currentTime, video.duration);
         }}
         onPlay={() => dispatch(playbackStarted())}
-        onPause={() => dispatch(playbackPaused())}
+        onPause={() => {
+          dispatch(playbackPaused());
+          props.onPause?.();
+        }}
         onEnded={props.onEnded}
         onError={() => setHasError(true)}
       />

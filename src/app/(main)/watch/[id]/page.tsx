@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Button, Container } from "@/components/ui";
 import { getCurrentUser } from "@/features/auth/server";
 import { getPlayback } from "@/features/player/server";
+import { getResumePosition } from "@/features/watch-progress/server";
 import { format } from "@/lib/i18n";
 import { getDictionary, getLocale } from "@/lib/i18n/get-locale";
 import styles from "./page.module.scss";
@@ -37,6 +38,9 @@ export default async function WatchPage({ params, searchParams }: WatchPageProps
     getCurrentUser(),
   ]);
   if (!playback) notFound();
+  const startAt = user
+    ? await getResumePosition(user.id, playback.titleId, playback.episode?.id ?? null)
+    : 0;
   const currentPath = `/watch/${playback.titleSlug}${playback.episode ? `?e=${playback.episode.id}` : ""}`;
 
   const episodeHref = (targetId: string) => `/watch/${playback.titleSlug}?e=${targetId}`;
@@ -61,6 +65,8 @@ export default async function WatchPage({ params, searchParams }: WatchPageProps
       <WatchPlayer
         key={playback.videoUrl + (playback.episode?.id ?? "")}
         titleId={playback.titleId}
+        episodeId={playback.episode?.id ?? null}
+        startAt={startAt}
         src={playback.videoUrl}
         originalTrack={playback.originalTrack}
         translationTrack={playback.translationTrack}

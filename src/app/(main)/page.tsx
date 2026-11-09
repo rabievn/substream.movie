@@ -15,7 +15,10 @@ import {
   getTopTitles,
   getUpcomingTitles,
 } from "@/features/catalog/server";
+import { getCurrentUser } from "@/features/auth/server";
 import { UpcomingSection } from "@/features/upcoming";
+import { ContinueWatchingRow } from "@/features/watch-progress";
+import { getContinueWatching } from "@/features/watch-progress/server";
 import { Section } from "@/components/ui";
 import { getDictionary, getLocale } from "@/lib/i18n/get-locale";
 import styles from "./page.module.scss";
@@ -23,7 +26,7 @@ import styles from "./page.module.scss";
 const NEW_FEED_SIZE = 12;
 
 export default async function HomePage() {
-  const [t, locale] = await Promise.all([getDictionary(), getLocale()]);
+  const [t, locale, user] = await Promise.all([getDictionary(), getLocale(), getCurrentUser()]);
   const [featured, upcoming, topMovies, topSeries, people, newest, collections] = await Promise.all(
     [
       getFeaturedTitle(locale),
@@ -35,11 +38,13 @@ export default async function HomePage() {
       getCollections(locale),
     ],
   );
+  const continueWatching = user ? await getContinueWatching(user.id, locale) : [];
 
   return (
     <>
       {featured ? <HeroFeatured title={featured} t={t} locale={locale} /> : null}
       <Container className={styles.sections}>
+        <ContinueWatchingRow items={continueWatching} t={t} />
         <UpcomingSection items={upcoming} t={t} locale={locale} />
         <TitleCarousel
           title={t.homePage.topMovies}

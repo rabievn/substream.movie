@@ -1,0 +1,68 @@
+.card {
+  display: grid;
+  gap: var(--space-2);
+  border-radius: var(--radius-md);
+
+  @include focus-ring(3px);
+
+  &:hover .play {
+    opacity: 1;
+  }
+}
+
+.media {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+.poster {
+  aspect-ratio: 16 / 9;
+  border-radius: 0;
+}
+
+.play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--color-media-shadow);
+  color: var(--color-on-media);
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-standard);
+
+  svg {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.progress {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--color-accent) var(--progress),
+    var(--color-media-shadow) var(--progress)
+  );
+}
+
+.text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--font-size-md);
+
+  @include truncate;
+}
+
+.meta {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}

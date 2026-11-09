@@ -1,0 +1,9 @@
+@use "sass:map";
+@use "variables" as *;
+
+// Mobile-first media query: @include respond-to(md) { ... }
+@mixin respond-to($bp) {
+  @media (min-width: map.get($breakpoints, $bp)) {
+    @content;
+  }
+}

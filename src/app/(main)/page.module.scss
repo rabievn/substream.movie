@@ -1,0 +1,7 @@
+.root {
+  padding: rem(16);
+
+  @include respond-to(md) {
+    padding: rem(32);
+  }
+}

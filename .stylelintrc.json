@@ -1,0 +1,47 @@
+{
+  "extends": ["stylelint-config-standard-scss"],
+  "rules": {
+    "selector-class-pattern": [
+      "^[a-z][a-zA-Z0-9]*$",
+      {
+        "message": "Use camelCase class names (styles.posterImage)"
+      }
+    ],
+    "selector-max-id": 0,
+    "declaration-no-important": true,
+    "max-nesting-depth": 3,
+    "color-no-hex": [
+      true,
+      {
+        "severity": "error"
+      }
+    ],
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global", "export"]
+      }
+    ],
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreSelectors": [":export"]
+      }
+    ],
+    "at-rule-disallowed-list": [
+      ["import"],
+      {
+        "message": "Use @use / @forward instead of @import"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/styles/themes/**/*.scss", "src/styles/abstracts/**/*.scss"],
+      "rules": {
+        "color-no-hex": null
+      }
+    }
+  ],
+  "ignoreFiles": [".next/**", "node_modules/**", "coverage/**"]
+}

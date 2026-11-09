@@ -1,11 +1,20 @@
+export { VideoPlayer, type VideoPlayerTrack } from "./components/video-player";
+export { formatTime } from "./format-time";
 export {
-  playerSlice,
-  playbackStarted,
+  durationUpdated,
   playbackPaused,
-  timeUpdated,
-  setPlaybackRate,
+  playbackStarted,
   PLAYBACK_RATES,
+  playerReset,
+  playerSlice,
+  setPlaybackRate,
+  timeUpdated,
   type PlaybackRate,
   type PlayerState,
 } from "./model/player-slice";
-export { selectIsPlaying, selectCurrentTime, selectPlaybackRate } from "./model/player-selectors";
+export {
+  selectCurrentTime,
+  selectDuration,
+  selectIsPlaying,
+  selectPlaybackRate,
+} from "./model/player-selectors";

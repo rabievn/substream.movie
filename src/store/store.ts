@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
+import { subtitleSettingsListener } from "@/features/subtitles";
 import { baseApi } from "./base-api";
 import { rootReducer } from "./root-reducer";
 
@@ -10,7 +11,10 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
   const store = configureStore({
     reducer: rootReducer,
     preloadedState,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware()
+        .prepend(subtitleSettingsListener.middleware)
+        .concat(baseApi.middleware),
   });
   setupListeners(store.dispatch);
   return store;

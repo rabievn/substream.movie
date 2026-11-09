@@ -46,3 +46,7 @@ next-env.d.ts
 /playwright-report/
 /playwright/.cache/
 /src/generated/
+
+# local media files (bring your own)
+/public/media/*.mp4
+/public/media/*.webm

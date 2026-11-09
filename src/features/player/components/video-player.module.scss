@@ -1,0 +1,49 @@
+.root {
+  --subtitle-offset: var(--space-16);
+
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  max-height: 80dvh;
+  border-radius: var(--radius-lg);
+  background: var(--color-player-bg);
+  color: var(--color-on-media);
+
+  &:fullscreen {
+    border-radius: 0;
+    aspect-ratio: auto;
+  }
+
+  // Controls fade out while playing; they come back on hover/focus.
+  > [data-player-controls] {
+    transition: opacity var(--duration-normal) var(--ease-standard);
+  }
+
+  &:not(.isPaused, :hover, :focus-within) {
+    --subtitle-offset: var(--space-4);
+
+    > [data-player-controls] {
+      opacity: 0;
+    }
+  }
+
+  @include respond-to(md) {
+    --subtitle-offset: var(--space-16);
+  }
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--color-player-bg);
+}
+
+.error {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--space-8);
+  text-align: center;
+}
